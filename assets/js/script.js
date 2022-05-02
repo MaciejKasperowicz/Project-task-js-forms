@@ -6,14 +6,53 @@
 const uploaderInput = document.querySelector(".uploader__input");
 const excursions = document.querySelector(".excursions");
 const excursionsItem = document.querySelector(".excursions__item ");
+const orderPanel = document.querySelector(".panel__order")
 const summaryPanel = document.querySelector(".panel__summary");
 const summaryItem = document.querySelector(".summary__item");
+const totalPriceValue = document.querySelector(".order__total-price-value");
+const orderInputs = document.querySelectorAll(".order__field-input");
+const orderSubmitBtn = document.querySelector(".order__field-submit");
+
 
 let summaryItemID = 1;
-
+let totalPrice = 0;
+const validatorObject ={
+    name: null,
+    email: null
+}
 
 uploaderInput.addEventListener("change", readFile);
-excursions.addEventListener("click", addExcursionsToSummary)
+excursions.addEventListener("click", addExcursionsToSummary);
+// orderInputs.forEach(orderInput => {
+//     orderInput.addEventListener("change", handleOrder)
+// });
+orderPanel.addEventListener("change", handleValid);
+orderPanel.addEventListener("submit", e => {
+    e.preventDefault();
+    const isValid = Object.values(validatorObject).every(item => item);
+    console.log(isValid);
+})
+
+function validate(value, input){
+    let re;
+    if(input === "name"){
+        // re = /[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż]/
+        re = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
+    } else {
+        re = /\S+@\S+\.\S+/;
+    }
+    return re.test(value);
+}
+
+function handleValid(e){
+    console.log(e.target)
+    if(e.target.name === "name"){
+        validatorObject.name = validate(e.target.value, "name")
+    } else {
+        validatorObject.email = validate(e.target.value, "email")
+    }
+}
+
 
 function readFile(e){
     const file = e.target.files[0];
@@ -95,11 +134,15 @@ function addExcursionsToSummary(e){
         const childrenInput = getInput("children");
         const adultsNumber = adultsInput.value;
         const childrenNumber = childrenInput.value
+
+        totalPrice = adultsNumber * adultPrice + childrenNumber * childPrice;
+        
         
 
         if(adultsNumber || childrenNumber){
             const newSummaryItem = summaryItem.cloneNode(true);
             newSummaryItem.id = summaryItemID;
+            newSummaryItem.value = totalPrice;
             newSummaryItem.classList.remove("summary__item--prototype");
             const summaryItemName = newSummaryItem.querySelector(".summary__name");
             const summaryItemTotalPrice = newSummaryItem.querySelector(".summary__total-price");
@@ -109,9 +152,12 @@ function addExcursionsToSummary(e){
             
             summaryItemRemoveBtn.id = summaryItemID;
             summaryItemName.textContent = excursion;
-            summaryItemTotalPrice.textContent = `${adultsNumber * adultPrice + childrenNumber * childPrice} PLN`
+            summaryItemTotalPrice.textContent = `${totalPrice} PLN`
             summaryPricesAdults.textContent = `Dorośli: ${adultsNumber?adultsNumber:0} x ${adultPrice} PLN`;
             summaryPricesChildren.textContent = `Dzieci: ${childrenNumber?childrenNumber:0} x ${childPrice} PLN`;
+
+            
+            totalPriceValue.innerText = Number(totalPriceValue.innerText) + Number(totalPrice)
 
             summaryItemID++
             summaryPanel.appendChild(newSummaryItem);
@@ -123,8 +169,10 @@ function addExcursionsToSummary(e){
                 // console.log(e.target)
                 const summaryItems = document.querySelectorAll(".summary__item");
                 summaryItems.forEach(summaryItem => {
+                    // console.log(summaryItem)
                     if (summaryItem.id === e.target.id) {
                         summaryPanel.removeChild(summaryItem);
+                        totalPriceValue.innerText = Number(totalPriceValue.innerText) - Number(summaryItem.value);
                     }
                 })
             }
