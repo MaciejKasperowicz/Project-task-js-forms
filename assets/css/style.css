@@ -32,9 +32,13 @@ ul {
     width: calc(50% - 20px);
 }
 
-/* .excursions__item--prototype{
+.excursions__item--prototype{
     display: none;
-} */
+}
+
+.summary__item--prototype{
+    display: none;
+}
 
 .panel__form {
     background-color: #f4f4f4;

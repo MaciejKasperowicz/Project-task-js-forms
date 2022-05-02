@@ -6,8 +6,10 @@
 const uploaderInput = document.querySelector(".uploader__input");
 const excursions = document.querySelector(".excursions");
 const excursionsItem = document.querySelector(".excursions__item ");
-const summaryPricesAdults = document.querySelector(".summary__prices--adults");
-const summaryPricesChildren = document.querySelector(".summary__prices--children");
+const summaryPanel = document.querySelector(".panel__summary");
+const summaryItem = document.querySelector(".summary__item");
+
+let summaryItemID = 1;
 
 
 uploaderInput.addEventListener("change", readFile);
@@ -82,26 +84,56 @@ function addExcursionsToSummary(e){
     if(self.classList.contains("excursions__field-input--submit")){
         // console.log(self.dataset)
         const {excursion, adultPrice, childPrice} = self.dataset;
-        console.log({excursion, adultPrice, childPrice})
+        // console.log({excursion, adultPrice, childPrice})
         const excursionInputs = document.querySelectorAll(`[data-excursion=${excursion}]`);
         // console.log(excursionInputs);
-        function getInputValue(inputName){
-            return [...excursionInputs].filter(input=> input.name === inputName)[0].value;
+        function getInput(inputName){
+            return [...excursionInputs].filter(input=> input.name === inputName)[0];
         }
         // const priceAdultInput = [...excursionInputs].filter(input=> input.name === "adults");
-        const adultsNumber = getInputValue("adults");
-        const childrenNumber = getInputValue("children");
-        summaryPricesAdults.textContent = "";
-        summaryPricesChildren.textContent = "";
+        const adultsInput = getInput("adults");
+        const childrenInput = getInput("children");
+        const adultsNumber = adultsInput.value;
+        const childrenNumber = childrenInput.value
         
-        if(adultsNumber > 0 && childrenNumber > 0){
-            summaryPricesAdults.textContent = `Dorośli: ${adultsNumber} x ${adultPrice} PLN`;
-            summaryPricesChildren.textContent = `Dzieci: ${childrenNumber} x ${childPrice} PLN`;
-        } else if(adultsNumber > 0){
-            summaryPricesAdults.textContent = `Dorośli: ${adultsNumber} x ${adultPrice} PLN`;
-        } else if(childrenNumber >0){
-            summaryPricesChildren.textContent = `Dzieci: ${childrenNumber} x ${childPrice} PLN`;
+
+        if(adultsNumber || childrenNumber){
+            const newSummaryItem = summaryItem.cloneNode(true);
+            newSummaryItem.id = summaryItemID;
+            newSummaryItem.classList.remove("summary__item--prototype");
+            const summaryItemName = newSummaryItem.querySelector(".summary__name");
+            const summaryItemTotalPrice = newSummaryItem.querySelector(".summary__total-price");
+            const summaryItemRemoveBtn = newSummaryItem.querySelector(".summary__btn-remove");
+            const summaryPricesAdults = newSummaryItem.querySelector(".summary__prices--adults");
+            const summaryPricesChildren = newSummaryItem.querySelector(".summary__prices--children");
+            
+            summaryItemRemoveBtn.id = summaryItemID;
+            summaryItemName.textContent = excursion;
+            summaryItemTotalPrice.textContent = `${adultsNumber * adultPrice + childrenNumber * childPrice} PLN`
+            summaryPricesAdults.textContent = `Dorośli: ${adultsNumber?adultsNumber:0} x ${adultPrice} PLN`;
+            summaryPricesChildren.textContent = `Dzieci: ${childrenNumber?childrenNumber:0} x ${childPrice} PLN`;
+
+            summaryItemID++
+            summaryPanel.appendChild(newSummaryItem);
+            adultsInput.value = "";
+            childrenInput.value = "";
+
+            function handleRemove(e){
+                e.preventDefault()
+                // console.log(e.target)
+                const summaryItems = document.querySelectorAll(".summary__item");
+                summaryItems.forEach(summaryItem => {
+                    if (summaryItem.id === e.target.id) {
+                        summaryPanel.removeChild(summaryItem);
+                    }
+                })
+            }
+
+            summaryItemRemoveBtn.addEventListener("click", handleRemove)
+            
         }
+        
+
     }
     
 }
