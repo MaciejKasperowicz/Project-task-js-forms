@@ -10,6 +10,15 @@
 </head>
 
 <body>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="closeBtn">&times;</span>
+      <p>Gratulacje, Twoje zamówienie zostało wysłane.</p>
+    </div>
+  </div>
+
   <section class="panel">
     <ul class="panel__excursions excursions">
       <li class="excursions__item excursions__item--prototype">
@@ -51,17 +60,20 @@
         </label>
       </div>
       <form class="panel__order order" novalidate>
-        <div class="order__total-price">
+        <div class="order__total-price tooltip">
+          <span class="tooltiptext tooltiptext--total-price">Dodaj przynajmniej jedną wycieczkę.</span>
           Razem:
           <span class="order__total-price-value">0</span> PLN
         </div>
         <div class="order__field">
-          <label class="order__field-name">
+          <label class="order__field-name tooltip">
+            <span class="tooltiptext tooltiptext--name">Wpisz Imię i Nazwisko oddzielone spacją.</span>
             Imię i nazwisko: <input class="order__field-input" name="name" />
           </label>
         </div>
         <div class="order__field">
-          <label class="order__field-name">
+          <label class="order__field-name tooltip">
+            <span class="tooltiptext tooltiptext--email">Wpisz adres email zawierający '@'.</span>
             Email: <input class="order__field-input" name="email" />
           </label>
         </div>
@@ -76,7 +88,6 @@
             <strong class="summary__total-price">199PLN</strong>
             <a href="" class="summary__btn-remove" title="usuń">X</a>
           </h3>
-          <!-- <p class="summary__prices">dorośli: 1 x 99PLN, dzieci: 2 x 50PLN</p> -->
           <section class="summary__prices">
             <p class="summary__prices--adults"></p>
             <p class="summary__prices--children"></p>

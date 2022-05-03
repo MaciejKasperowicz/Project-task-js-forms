@@ -3,6 +3,22 @@
 
 // console.log( txt.split(/[\r\n]+/gm) );
 
+//MODAL
+const modal = document.querySelector(".modal");
+const modalBtn = document.querySelector(".closeBtn");
+modalBtn.addEventListener("click", closeModal);
+window.addEventListener("click", closeModal);
+
+function showModal(){
+    clearData();
+    modal.style.display = "block";
+}
+function closeModal(e){
+    if(e.target === modalBtn || e.target === modal){
+        modal.style.display = "none";
+    }
+}
+
 const uploaderInput = document.querySelector(".uploader__input");
 const excursions = document.querySelector(".excursions");
 const excursionsItem = document.querySelector(".excursions__item ");
@@ -12,10 +28,16 @@ const summaryItem = document.querySelector(".summary__item");
 const totalPriceValue = document.querySelector(".order__total-price-value");
 const orderInputs = document.querySelectorAll(".order__field-input");
 const orderSubmitBtn = document.querySelector(".order__field-submit");
+const orderName = document.querySelector("[name=name]");
+const orderEmail = document.querySelector("[name=email]");
+const tooltipTextTotalPrice = document.querySelector(".tooltiptext--total-price");
+const tooltipTextName = document.querySelector(".tooltiptext--name");
+const tooltipTextEmail = document.querySelector(".tooltiptext--email");
 
 
 let summaryItemID = 1;
 let totalPrice = 0;
+let excursionPrice = 0;
 const validatorObject ={
     name: null,
     email: null
@@ -29,15 +51,34 @@ excursions.addEventListener("click", addExcursionsToSummary);
 orderPanel.addEventListener("change", handleValid);
 orderPanel.addEventListener("submit", e => {
     e.preventDefault();
-    const isValid = Object.values(validatorObject).every(item => item);
-    console.log(isValid);
+    const validatorObjectValues = Object.values(validatorObject);
+    if(totalPrice){
+        const isValid = validatorObjectValues.every(item => item);
+        console.log(isValid);
+        console.log(totalPrice);
+        if(isValid){
+            showModal();
+        } else{
+            for (const key in validatorObject) {
+                if(!validatorObject[key]){
+                    document.querySelector(`.tooltiptext--${key}`).classList.add("tooltiptext--visible")
+                } else{
+                    document.querySelector(`.tooltiptext--${key}`).classList.remove("tooltiptext--visible")
+                }
+            }
+
+        }
+
+    } else{
+        tooltipTextTotalPrice.classList.add("tooltiptext--visible")
+    }
+    
 })
 
 function validate(value, input){
     let re;
     if(input === "name"){
-        // re = /[AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż]/
-        re = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/
+        re = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
     } else {
         re = /\S+@\S+\.\S+/;
     }
@@ -45,11 +86,26 @@ function validate(value, input){
 }
 
 function handleValid(e){
-    console.log(e.target)
+    // console.log(e.target)
     if(e.target.name === "name"){
-        validatorObject.name = validate(e.target.value, "name")
-    } else {
-        validatorObject.email = validate(e.target.value, "email")
+        const isValid = validate(e.target.value, "name");
+        validatorObject.name = isValid
+        // console.log(isValid)
+        if(!isValid){
+            tooltipTextName.classList.add("tooltiptext--visible")
+        } else {
+            tooltipTextName.classList.remove("tooltiptext--visible")
+        }
+
+    } else if(e.target.name === "email") {
+        const isValid = validate(e.target.value, "email");
+        validatorObject.email = isValid
+        // console.log(isValid)
+        if(!isValid){
+            tooltipTextEmail.classList.add("tooltiptext--visible")
+        } else {
+            tooltipTextEmail.classList.remove("tooltiptext--visible")
+        } 
     }
 }
 
@@ -92,11 +148,9 @@ function addExcursionsToDOM(data){
             return word.slice(1, word.length - 1)
         }
 
-        // const title = splittedWordsArr[1].slice(1, splittedWordsArr[1].length - 1)
         const title = removeQuotes(splittedWordsArr[1]);
         let description = splittedWordsArr.slice(2,(splittedWordsArr.length-2)).toString();
         description = removeQuotes(description);
-        // description = removeQuotes(description);
         const priceAdult = removeQuotes(splittedWordsArr[splittedWordsArr.length -2]);
         const priceChild= removeQuotes(splittedWordsArr[splittedWordsArr.length -1]);
         
@@ -116,33 +170,28 @@ function addExcursionsToDOM(data){
 
 function addExcursionsToSummary(e){
     e.preventDefault();
-    // console.log("e.target", e.target)
-    // console.log("e.currentTarget", e.currentTarget)
     const self = e.target;
     
     if(self.classList.contains("excursions__field-input--submit")){
-        // console.log(self.dataset)
         const {excursion, adultPrice, childPrice} = self.dataset;
-        // console.log({excursion, adultPrice, childPrice})
         const excursionInputs = document.querySelectorAll(`[data-excursion=${excursion}]`);
-        // console.log(excursionInputs);
+        
         function getInput(inputName){
             return [...excursionInputs].filter(input=> input.name === inputName)[0];
         }
-        // const priceAdultInput = [...excursionInputs].filter(input=> input.name === "adults");
         const adultsInput = getInput("adults");
         const childrenInput = getInput("children");
         const adultsNumber = adultsInput.value;
         const childrenNumber = childrenInput.value
 
-        totalPrice = adultsNumber * adultPrice + childrenNumber * childPrice;
+        excursionPrice = adultsNumber * adultPrice + childrenNumber * childPrice;
         
         
 
         if(adultsNumber || childrenNumber){
             const newSummaryItem = summaryItem.cloneNode(true);
             newSummaryItem.id = summaryItemID;
-            newSummaryItem.value = totalPrice;
+            newSummaryItem.value = excursionPrice;
             newSummaryItem.classList.remove("summary__item--prototype");
             const summaryItemName = newSummaryItem.querySelector(".summary__name");
             const summaryItemTotalPrice = newSummaryItem.querySelector(".summary__total-price");
@@ -152,36 +201,44 @@ function addExcursionsToSummary(e){
             
             summaryItemRemoveBtn.id = summaryItemID;
             summaryItemName.textContent = excursion;
-            summaryItemTotalPrice.textContent = `${totalPrice} PLN`
+            summaryItemTotalPrice.textContent = `${excursionPrice} PLN`
             summaryPricesAdults.textContent = `Dorośli: ${adultsNumber?adultsNumber:0} x ${adultPrice} PLN`;
             summaryPricesChildren.textContent = `Dzieci: ${childrenNumber?childrenNumber:0} x ${childPrice} PLN`;
 
+            totalPrice+=excursionPrice;
             
-            totalPriceValue.innerText = Number(totalPriceValue.innerText) + Number(totalPrice)
+            totalPriceValue.innerText = totalPrice;
 
             summaryItemID++
+            tooltipTextTotalPrice.classList.remove("tooltiptext--visible")
             summaryPanel.appendChild(newSummaryItem);
             adultsInput.value = "";
             childrenInput.value = "";
 
             function handleRemove(e){
                 e.preventDefault()
-                // console.log(e.target)
                 const summaryItems = document.querySelectorAll(".summary__item");
                 summaryItems.forEach(summaryItem => {
-                    // console.log(summaryItem)
                     if (summaryItem.id === e.target.id) {
                         summaryPanel.removeChild(summaryItem);
-                        totalPriceValue.innerText = Number(totalPriceValue.innerText) - Number(summaryItem.value);
+                        totalPrice-=summaryItem.value;
+                        totalPriceValue.innerText = totalPrice;
                     }
                 })
             }
 
             summaryItemRemoveBtn.addEventListener("click", handleRemove)
-            
         }
-        
-
     }
-    
+}
+
+function clearData(){
+    orderName.value = "";
+    orderEmail.value = "";
+    totalPrice = 0;
+    summaryPanel.innerHTML = '';
+    totalPriceValue.textContent = 0;
+    for (const key in validatorObject) {
+        validatorObject[key] = null;
+    }
 }
