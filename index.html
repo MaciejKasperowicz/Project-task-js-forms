@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>JavaScript: Formularze - devmentor.pl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 
@@ -33,20 +34,28 @@
         <form class="excursions__form">
           <div class="excursions__field">
             <label class="excursions__field-name">
-              Dorosły: <span class="excursions__price excursions__price--adult">99</span> PLN x
-              <input class="excursions__field-input" name="adults" type="number" min="0"
+              <div class="excursions__info">
+                <span class="excursions-name--adult">Dorosły:</span>
+                <span class="excursions__price excursions__price--adult">99</span>
+                <span class="excursions__price excursions__price--currency">PLN x</span>
+              </div>
+              <input class="input excursions__field-input" name="adults" type="number" min="0"
                 oninput="validity.valid||(value='');" />
             </label>
           </div>
           <div class="excursions__field">
             <label class="excursions__field-name">
-              Dziecko: <span class="excursions__price excursions__price--child">50 </span> PLN x
-              <input class="excursions__field-input" name="children" type="number" min="0"
+              <div class="excursions__info">
+                <span class="excursions-name--child">Dziecko:</span>
+                <span class="excursions__price excursions__price--child">50</span>
+                <span class="excursions__price excursions__price--currency">PLN x</span>
+              </div>
+              <input class="input excursions__field-input" name="children" type="number" min="0"
                 oninput="validity.valid||(value='');" />
             </label>
           </div>
           <div class=" excursions__field excursions__field--submit">
-            <input class="excursions__field-input excursions__field-input--submit" value="dodaj do zamówienia"
+            <input class="excursions__field-input excursions__field-input--submit" value="Dodaj do zamówienia"
               type="submit" />
           </div>
         </form>
@@ -68,13 +77,13 @@
         <div class="order__field">
           <label class="order__field-name tooltip">
             <span class="tooltiptext tooltiptext--name">Wpisz Imię i Nazwisko oddzielone spacją.</span>
-            Imię i nazwisko: <input class="order__field-input" name="name" />
+            Imię i nazwisko: <input class="input order__field-input" name="name" />
           </label>
         </div>
         <div class="order__field">
           <label class="order__field-name tooltip">
             <span class="tooltiptext tooltiptext--email">Wpisz adres email zawierający '@'.</span>
-            Email: <input class="order__field-input" name="email" />
+            Email: <input class="input order__field-input" name="email" />
           </label>
         </div>
         <div class="order__field order__field--submit">
