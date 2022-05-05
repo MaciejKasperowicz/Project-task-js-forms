@@ -14,9 +14,11 @@
   <!-- The Modal -->
   <div id="myModal" class="modal">
     <!-- Modal content -->
-    <div class="modal-content">
+    <div class="modal__content">
+      <p class="modal__info">Gratulacje, Twoje zamówienie zostało wysłane na adres:
+        <span class="modal__address"></span>
+      </p>
       <span class="closeBtn">&times;</span>
-      <p>Gratulacje, Twoje zamówienie zostało wysłane.</p>
     </div>
   </div>
 
@@ -65,7 +67,7 @@
       <div class="panel__uploader uploader">
         <label class="uploader__label">
           Wybierz plik do wczytania wycieczek:
-          <input class="uploader__input" type="file" accept=".csv" />
+          <input class="uploader__input uploader__input--shake" type="file" accept=".csv" />
         </label>
       </div>
       <form class="panel__order order" novalidate>
@@ -74,28 +76,32 @@
           Razem:
           <span class="order__total-price-value">0</span> PLN
         </div>
+        <!-- <div class="order__fields"> -->
         <div class="order__field">
           <label class="order__field-name tooltip">
             <span class="tooltiptext tooltiptext--name">Wpisz Imię i Nazwisko oddzielone spacją.</span>
-            Imię i nazwisko: <input class="input order__field-input" name="name" />
+            <span class="order__field-title">Imię i nazwisko:</span>
+            <input class="input order__field-input" name="name" />
           </label>
         </div>
         <div class="order__field">
           <label class="order__field-name tooltip">
             <span class="tooltiptext tooltiptext--email">Wpisz adres email zawierający '@'.</span>
-            Email: <input class="input order__field-input" name="email" />
+            <span class="order__field-title">Email:</span>
+            <input class="input order__field-input" name="email" />
           </label>
         </div>
+        <!-- </div> -->
         <div class="order__field order__field--submit">
           <input class="order__field-input order__field-submit" value="zamawiam" type="submit" />
         </div>
       </form>
       <ul class="panel__summary summary">
         <li class="summary__item summary__item--prototype">
+          <a href="" class="summary__btn-remove" title="usuń">&times;</a>
           <h3 class="summary__title">
             <span class="summary__name">Ogrodzieniec</span>
             <strong class="summary__total-price">199PLN</strong>
-            <a href="" class="summary__btn-remove" title="usuń">X</a>
           </h3>
           <section class="summary__prices">
             <p class="summary__prices--adults"></p>

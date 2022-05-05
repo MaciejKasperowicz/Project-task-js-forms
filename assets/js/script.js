@@ -6,12 +6,14 @@
 //MODAL
 const modal = document.querySelector(".modal");
 const modalBtn = document.querySelector(".closeBtn");
+const modalAddress = document.querySelector(".modal__address")
 modalBtn.addEventListener("click", closeModal);
 window.addEventListener("click", closeModal);
 
 function showModal(){
-    clearData();
     modal.style.display = "block";
+    modalAddress.textContent = orderEmail.value;
+    clearData();
 }
 function closeModal(e){
     if(e.target === modalBtn || e.target === modal){
@@ -113,6 +115,7 @@ function handleValid(e){
 function readFile(e){
     const file = e.target.files[0];
     if(file && file.type.includes("csv")){
+        uploaderInput.classList.remove("uploader__input--shake");
         const reader = new FileReader();
         reader.onload = function(readEvent){
             const content = readEvent.target.result;
@@ -121,7 +124,8 @@ function readFile(e){
         };
         reader.readAsText(file, "UTF-8");
     } else {
-        alert("Wybierz plik w formacie .csv")
+        alert("Wybierz plik w formacie .csv");
+        uploaderInput.classList.add("uploader__input--shake");
     }
 }
 
