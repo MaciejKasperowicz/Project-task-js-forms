@@ -70,7 +70,7 @@ body{
   justify-content: center;
   align-items: center;
   margin-top: 5%;
-
+  
 }
 
 .excursions__field-input--submit{
@@ -82,30 +82,47 @@ body{
   color: white;
   border-radius: 10px;
   border-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.5s;
 }
+
+.excursions__field-input--submit:hover{
+  background-color:#00FFC6
+}
+
 
 .panel {
+  position: relative;
   height: 100%;
-    display: flex;
-    margin: 0 auto;
-    max-width: 1200px;
-    padding: 30px 0;
-    /*  */
-    /* background-color: rgb(0, 255, 198, 0.5); */
+  display: flex;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 30px 0;
 }
+
+
 
 .panel__excursions {
-    width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  margin: 0 10px;
+}
+
+/* @media (max-width: 1000px ){
+  .panel__excursions {
+    position: absolute;
+    top: 400px;
+    width: 100%;
     margin: 0 10px;
-    /* background-color: rgb(0, 255, 198, 0.8); */
-
 }
+} */
 
-.excursions {
-  /* height: 50vh; */
-    display: flex;
-    flex-wrap: wrap;
-}
+/* .excursions {
+    
+} */
+
+
 
 .excursions__item {
   /* height: 40%; */
@@ -115,6 +132,17 @@ body{
     padding: 10px;
     width: calc(50% - 40px);
     background-color: rgb(67, 145, 155, 0.8)
+}
+
+/* @media (max-width: 1000px ){
+  .excursions__item {
+    width: calc(100% - 40px);
+    margin: 0 10px;
+}
+} */
+
+.excursions__item--prototype{
+  display: none;
 }
 
 .excursions__header{
@@ -135,21 +163,26 @@ body{
   margin-bottom: 10%;
 }
 
-.excursions__item--prototype{
-    display: none;
-}
 
-.summary__item--prototype{
-    display: none;
-}
+
+
 
 .panel__form {
-    /* background-color: #f4f4f4; */
     height: 70%;
-    padding: 20px;
     width: 30%;
+    padding: 20px;
     background-color: rgba(36, 120, 129, 0.7);
 }
+
+/* @media (max-width: 1000px ){
+  .panel__form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+  }
+} */
 
 .uploader, .order {
     border-bottom: 1px solid #bbb;
@@ -235,7 +268,15 @@ body{
   text-transform: uppercase;
   font-weight: bold;
   font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.5s, letter-spacing 0.5s;
 }
+
+.order__field-submit:hover{
+  background-color: rgb(255, 133, 179);
+  letter-spacing: 2px;
+}
+
 
 .summary__item{
   position: relative;
@@ -259,6 +300,12 @@ body{
   font-size: 40px;
   text-decoration: none;
   font-weight: bold;
+  transition: color 0.5s, transform 0.5s;
+}
+
+.summary__btn-remove:hover{
+  color: rgb(235, 83, 83);
+  transform: scale(1.5) rotate(90deg);
 }
 
 .summary__total-price{
@@ -293,7 +340,7 @@ body{
     left: 50%;
     margin-left: -60px;
     opacity: 0;
-    font-size: 10px;
+    font-size: 12px;
     transition: opacity 0.3s;
   }
 
@@ -354,6 +401,10 @@ body{
     border: 1px solid #888;
     width: 50%;
   }
+
+  .modal__address{
+    color: rgb(0, 255, 198);
+  }
   
   /* The Close Button */
   .closeBtn {
@@ -361,11 +412,13 @@ body{
     float: right;
     font-size: 40px;
     font-weight: bold;
+    cursor: pointer;
+    transition: color 0.5s, transform 0.5s;
   }
+
   
   .closeBtn:hover,
   .closeBtn:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+    color: rgb(235, 83, 83);
+    transform: scale(1.5) rotate(90deg);
   }
