@@ -1,3 +1,7 @@
+:root {
+  --panel__form--height: 0px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -43,9 +47,102 @@ body{
 }
 
 
+
+
+/* PANEL SECTION */
+
+.panel {
+  position: relative;
+  height: 100%;
+  display: flex;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 30px 0;
+}
+
+@media (max-width: 1000px ){
+  .panel {
+    padding: 0 0;
+  }
+}
+
+/* END PANEL SECTION */
+
+
+
+
+/* PANEL EXCURSIONS */
+
+.panel__excursions {
+  display: flex;
+  flex-wrap: wrap;
+  width: 70%;
+  margin: 0 10px;
+}
+
+@media (max-width: 1000px ){
+  .panel__excursions {
+    position: absolute;
+    top: var(--panel__form--height);
+    width: 100%;
+    margin: 10px 10px;
+}
+}
+
+.excursions__item {
+  height: 50%;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 10px;
+    width: calc(50% - 40px);
+    background-color: rgb(67, 145, 155, 0.8)
+}
+
+@media (max-width: 1000px ){
+  .excursions__item {
+    width: calc(100% - 40px);
+    margin: 20px 10px;
+    padding: 20px;
+}
+}
+
+.excursions__item--prototype{
+  display: none;
+}
+
+.excursions__header{
+  height: 60%;
+  text-align:justify;
+}
+
+@media (max-width: 1000px ){
+  .excursions__header{
+    height: 50%;
+  }
+}
+
+.excursions__title{
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.excursions__description{
+  color: rgb(236, 240, 241);
+  line-height: 1.3;
+  margin-bottom: 10%;
+}
+
+@media (max-width: 1000px ){
+  .excursions__description{
+    margin-bottom: 8%;
+  }
+}
+
 .excursions__field-name{
   display: flex;
-  /* width: 50%; */
   justify-content: center;
   margin-bottom: 2%;
 }
@@ -55,6 +152,12 @@ body{
   justify-content: space-evenly;
   width: 50%;
 }
+@media (max-width: 300px ){
+  .excursions__info{
+    width: 70%;
+  }
+}
+
 
 .excursions__field-input{
   width: 15%;
@@ -85,88 +188,23 @@ body{
   cursor: pointer;
   transition: background-color 0.5s;
 }
+@media (max-width: 300px ){
+  .excursions__field-input--submit{
+    width: 90%;
+  }
+}
 
 .excursions__field-input--submit:hover{
   background-color:#00FFC6
 }
 
-
-.panel {
-  position: relative;
-  height: 100%;
-  display: flex;
-  margin: 0 auto;
-  max-width: 1200px;
-  padding: 30px 0;
-}
-
-
-
-.panel__excursions {
-  display: flex;
-  flex-wrap: wrap;
-  width: 70%;
-  margin: 0 10px;
-}
-
-/* @media (max-width: 1000px ){
-  .panel__excursions {
-    position: absolute;
-    top: 400px;
-    width: 100%;
-    margin: 0 10px;
-}
-} */
-
-/* .excursions {
-    
-} */
-
-
-
-.excursions__item {
-  /* height: 40%; */
-    border: 1px solid #bbb;
-    border-radius: 5px;
-    margin: 20px;
-    padding: 10px;
-    width: calc(50% - 40px);
-    background-color: rgb(67, 145, 155, 0.8)
-}
-
-/* @media (max-width: 1000px ){
-  .excursions__item {
-    width: calc(100% - 40px);
-    margin: 0 10px;
-}
-} */
-
-.excursions__item--prototype{
-  display: none;
-}
-
-.excursions__header{
-  height: 60%;
-  text-align:justify;
-}
-.excursions__title{
-  text-align: center;
-  font-weight: bold;
-  font-size: 25px;
-  margin-bottom: 5px;
-}
-
-.excursions__description{
-  
-  color: rgb(236, 240, 241);
-  line-height: 1.3;
-  margin-bottom: 10%;
-}
+/* END PANEL EXCURSIONS */
 
 
 
 
 
+/* PANEL FORM */
 .panel__form {
     height: 70%;
     width: 30%;
@@ -174,20 +212,27 @@ body{
     background-color: rgba(36, 120, 129, 0.7);
 }
 
-/* @media (max-width: 1000px ){
+@media (max-width: 1000px ){
   .panel__form {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
-    height: 50%;
+    height: 66%;
   }
-} */
+}
 
 .uploader, .order {
     border-bottom: 1px solid #bbb;
     margin-bottom: 20px;
     padding-bottom: 20px;
+}
+
+@media (max-width: 1000px ){
+  .uploader, .order {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .uploader__input::file-selector-button {
@@ -201,6 +246,7 @@ body{
   font-weight: bold;
   text-align: center;
 }
+
 
 .uploader__input--shake{
   animation: shake 3s;
@@ -231,6 +277,12 @@ body{
   display: flex;
   width: 100%;
   margin: 8% 0;
+}
+
+@media (max-width: 1000px ){
+  .order__field-name{
+    margin: 2% 0;
+  }
 }
 
 .order__field-title{
@@ -272,11 +324,24 @@ body{
   transition: background-color 0.5s, letter-spacing 0.5s;
 }
 
+@media (max-width: 1000px ){
+  .order__field-submit{
+    padding: 15px 0px;
+    margin: 2% 0;
+  }
+}
+
 .order__field-submit:hover{
   background-color: rgb(255, 133, 179);
   letter-spacing: 2px;
 }
 
+/* END PANEL FORM */
+
+
+
+
+/* PANEL SUMMARY */
 
 .summary__item{
   position: relative;
@@ -312,17 +377,15 @@ body{
   color: #00FFC6;
 }
 
+/* END PANEL SUMMARY */
 
 
 
-
-
-
+/* TOOLTIP */
 
 .tooltip {
     position: relative;
     display: inline-block;
-    /* border-bottom: 1px dotted black; */
   }
   
   .tooltip .tooltiptext {
@@ -335,7 +398,6 @@ body{
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    /* bottom: 125%; */
     bottom: 100%;
     left: 50%;
     margin-left: -60px;
@@ -369,19 +431,27 @@ body{
     visibility: visible;
     opacity: 1;
   }
+  @media (max-width: 400px){
+    .tooltip .tooltiptext--visible{
+      visibility: hidden;
+    }
+  }
+
+  /* END TOOLTIP */
 
 
-  /* The Modal (background) */
+
+ /* MODAL */
+
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    /* padding-top: 100px; Location of the box */
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
   }
@@ -396,14 +466,14 @@ body{
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgb(67, 145, 155);
-    /* margin: auto; */
     padding: 20px;
     border: 1px solid #888;
     width: 50%;
   }
 
-  .modal__address{
+  .modal__address, .modal__price{
     color: rgb(0, 255, 198);
+    font-weight: bold;
   }
   
   /* The Close Button */
@@ -422,3 +492,5 @@ body{
     color: rgb(235, 83, 83);
     transform: scale(1.5) rotate(90deg);
   }
+
+  /* END MODAL */

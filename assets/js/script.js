@@ -6,21 +6,45 @@
 //MODAL
 const modal = document.querySelector(".modal");
 const modalBtn = document.querySelector(".closeBtn");
-const modalAddress = document.querySelector(".modal__address")
+const modalAddress = document.querySelector(".modal__address");
+const modalPrice = document.querySelector(".modal__price");
 modalBtn.addEventListener("click", closeModal);
 window.addEventListener("click", closeModal);
+
+
 
 function showModal(){
     modal.style.display = "block";
     modalAddress.textContent = orderEmail.value;
+    modalPrice.textContent = totalPrice;
+    
     clearData();
 }
 function closeModal(e){
     if(e.target === modalBtn || e.target === modal){
+        setPanelFormHeight();
         modal.style.display = "none";
     }
 }
 
+function clearData(){
+    orderName.value = "";
+    orderEmail.value = "";
+    totalPrice = 0;
+    summaryPanel.innerHTML = '';
+    totalPriceValue.textContent = 0;
+    for (const key in validatorObject) {
+        validatorObject[key] = null;
+    }
+}
+//END MODAL
+
+
+
+//HTML ELEMENTS
+const root = document.querySelector(':root');
+
+const panelForm = document.querySelector(".panel__form");
 const uploaderInput = document.querySelector(".uploader__input");
 const excursions = document.querySelector(".excursions");
 const excursionsItem = document.querySelector(".excursions__item ");
@@ -36,7 +60,16 @@ const tooltipTextTotalPrice = document.querySelector(".tooltiptext--total-price"
 const tooltipTextName = document.querySelector(".tooltiptext--name");
 const tooltipTextEmail = document.querySelector(".tooltiptext--email");
 
+//Set PanelFormHeight for smaller screens
+function setPanelFormHeight(){
+    panelFormHeight = parseInt(window.getComputedStyle(panelForm).height.slice(0, -2));
+    root.style.setProperty("--panel__form--height", `${panelFormHeight}px`);
+}
+//END HTML ELEMENTS
+setPanelFormHeight();
 
+
+//GLOBAL VARIABLES
 let summaryItemID = 1;
 let totalPrice = 0;
 let excursionPrice = 0;
@@ -45,73 +78,13 @@ const validatorObject ={
     email: null
 }
 
-uploaderInput.addEventListener("change", readFile);
-excursions.addEventListener("click", addExcursionsToSummary);
-// orderInputs.forEach(orderInput => {
-//     orderInput.addEventListener("change", handleOrder)
-// });
-orderPanel.addEventListener("change", handleValid);
-orderPanel.addEventListener("submit", e => {
-    e.preventDefault();
-    const validatorObjectValues = Object.values(validatorObject);
-    if(totalPrice){
-        const isValid = validatorObjectValues.every(item => item);
-        console.log(isValid);
-        console.log(totalPrice);
-        if(isValid){
-            showModal();
-        } else{
-            for (const key in validatorObject) {
-                if(!validatorObject[key]){
-                    document.querySelector(`.tooltiptext--${key}`).classList.add("tooltiptext--visible")
-                } else{
-                    document.querySelector(`.tooltiptext--${key}`).classList.remove("tooltiptext--visible")
-                }
-            }
-
-        }
-
-    } else{
-        tooltipTextTotalPrice.classList.add("tooltiptext--visible")
-    }
-    
-})
-
-function validate(value, input){
-    let re;
-    if(input === "name"){
-        re = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
-    } else {
-        re = /\S+@\S+\.\S+/;
-    }
-    return re.test(value);
-}
-
-function handleValid(e){
-    // console.log(e.target)
-    if(e.target.name === "name"){
-        const isValid = validate(e.target.value, "name");
-        validatorObject.name = isValid
-        // console.log(isValid)
-        if(!isValid){
-            tooltipTextName.classList.add("tooltiptext--visible")
-        } else {
-            tooltipTextName.classList.remove("tooltiptext--visible")
-        }
-
-    } else if(e.target.name === "email") {
-        const isValid = validate(e.target.value, "email");
-        validatorObject.email = isValid
-        // console.log(isValid)
-        if(!isValid){
-            tooltipTextEmail.classList.add("tooltiptext--visible")
-        } else {
-            tooltipTextEmail.classList.remove("tooltiptext--visible")
-        } 
-    }
-}
+//END GLOBAL VARIABLES
 
 
+
+//FUNCTIONS
+
+//Read .csv file
 function readFile(e){
     const file = e.target.files[0];
     if(file && file.type.includes("csv")){
@@ -129,8 +102,7 @@ function readFile(e){
     }
 }
 
-
-
+//Add Excursions to DOM
 function addExcursionsToDOM(data){
     data.forEach(item => {
         const excItem = excursionsItem.cloneNode(true);
@@ -144,7 +116,6 @@ function addExcursionsToDOM(data){
         const priceAdultInput = excItem.querySelector("[name=adults]");
         const priceChildInput = excItem.querySelector("[name=children]");
         const addOrderInput = excItem.querySelector(".excursions__field-input--submit");
-        
         
         const splittedWordsArr = item.split(',');
 
@@ -167,11 +138,13 @@ function addExcursionsToDOM(data){
         addOrderInput.dataset.excursion = title;
         addOrderInput.dataset.adultPrice = priceAdult;
         addOrderInput.dataset.childPrice = priceChild;
-        excursions.appendChild(excItem)
+        excursions.appendChild(excItem);
+
+        setPanelFormHeight()
     })
 }
 
-
+//Add Excursions to Summary
 function addExcursionsToSummary(e){
     e.preventDefault();
     const self = e.target;
@@ -189,8 +162,6 @@ function addExcursionsToSummary(e){
         const childrenNumber = childrenInput.value
 
         excursionPrice = adultsNumber * adultPrice + childrenNumber * childPrice;
-        
-        
 
         if(adultsNumber || childrenNumber){
             const newSummaryItem = summaryItem.cloneNode(true);
@@ -216,6 +187,10 @@ function addExcursionsToSummary(e){
             summaryItemID++
             tooltipTextTotalPrice.classList.remove("tooltiptext--visible")
             summaryPanel.appendChild(newSummaryItem);
+
+
+            setPanelFormHeight()
+
             adultsInput.value = "";
             childrenInput.value = "";
 
@@ -227,6 +202,8 @@ function addExcursionsToSummary(e){
                         summaryPanel.removeChild(summaryItem);
                         totalPrice-=summaryItem.value;
                         totalPriceValue.innerText = totalPrice;
+
+                        setPanelFormHeight();
                     }
                 })
             }
@@ -236,13 +213,69 @@ function addExcursionsToSummary(e){
     }
 }
 
-function clearData(){
-    orderName.value = "";
-    orderEmail.value = "";
-    totalPrice = 0;
-    summaryPanel.innerHTML = '';
-    totalPriceValue.textContent = 0;
-    for (const key in validatorObject) {
-        validatorObject[key] = null;
+//Validate inputs
+function validate(value, input){
+    let re;
+    if(input === "name"){
+        re = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
+    } else {
+        re = /\S+@\S+\.\S+/;
+    }
+    return re.test(value);
+}
+
+//Perform validation
+function handleValid(e){
+    if(e.target.name === "name"){
+        const isValid = validate(e.target.value, "name");
+        validatorObject.name = isValid
+        if(!isValid){
+            tooltipTextName.classList.add("tooltiptext--visible")
+        } else {
+            tooltipTextName.classList.remove("tooltiptext--visible")
+        }
+
+    } else if(e.target.name === "email") {
+        const isValid = validate(e.target.value, "email");
+        validatorObject.email = isValid
+        if(!isValid){
+            tooltipTextEmail.classList.add("tooltiptext--visible")
+        } else {
+            tooltipTextEmail.classList.remove("tooltiptext--visible")
+        } 
     }
 }
+//END FUNCTIONS
+
+
+
+
+//EVENT LISTENERS
+uploaderInput.addEventListener("change", readFile);
+excursions.addEventListener("click", addExcursionsToSummary);
+orderPanel.addEventListener("change", handleValid);
+orderPanel.addEventListener("submit", e => {
+    e.preventDefault();
+    const validatorObjectValues = Object.values(validatorObject);
+    if(totalPrice){
+        const isValid = validatorObjectValues.every(item => item);
+        // console.log(isValid);
+        // console.log(totalPrice);
+        if(isValid){
+            showModal();
+        } else{
+            for (const key in validatorObject) {
+                if(!validatorObject[key]){
+                    document.querySelector(`.tooltiptext--${key}`).classList.add("tooltiptext--visible")
+                } else{
+                    document.querySelector(`.tooltiptext--${key}`).classList.remove("tooltiptext--visible")
+                }
+            }
+
+        }
+
+    } else{
+        tooltipTextTotalPrice.classList.add("tooltiptext--visible")
+    }
+});
+//END EVENT LISTENERS
