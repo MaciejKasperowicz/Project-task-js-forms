@@ -432,7 +432,10 @@ body{
     opacity: 1;
   }
   @media (max-width: 400px){
-    .tooltip .tooltiptext--visible{
+    .tooltiptext--name.tooltiptext--visible{
+      visibility: hidden;
+    }
+    .tooltiptext--email.tooltiptext--visible{
       visibility: hidden;
     }
   }
